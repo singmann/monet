@@ -2,6 +2,7 @@
 library("devtools")
 load_all()
 document()
+library("testthat")
 
 library(usethis) ## see: https://github.com/r-lib/usethis
 

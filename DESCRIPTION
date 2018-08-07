@@ -18,5 +18,6 @@ RoxygenNote: 6.1.0
 Suggests:
     afex,
     lme4,
-    MEMSS
+    MEMSS,
+    testthat
 Imports: stats

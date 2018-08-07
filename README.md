@@ -1,3 +1,5 @@
+[![Travis-CI Build Status](https://travis-ci.org/singmann/monet.svg?branch=master)](https://travis-ci.org/singmann/monet)
+
 # monet
 
 `monet` provides an interface for Type III tests of model terms for any 
