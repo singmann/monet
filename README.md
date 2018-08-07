@@ -8,6 +8,9 @@ withhold (i.e., set to zero). The test between the full model and the restricted
 model can be  performed via any user-provided model comparison function, the
 default uses the generic `anova` function.
 In some sense, `monet` provides a generalization to `afex::mixed`.
+
+The name `monet` is basically a portmanteau based on the fact that this package 
+provides MOdel comparisons for NEsTed models. 
  
 
 ## Installation
