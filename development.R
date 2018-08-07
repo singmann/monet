@@ -10,7 +10,7 @@ use_package("MEMSS", "Suggests")
 use_package("stats", "Imports")
 
 use_test("test_terms")
-
+use_readme_md()
 
 #### basic use
 

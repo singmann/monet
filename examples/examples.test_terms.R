@@ -1,5 +1,5 @@
 
-set_sum_contrasts()
+set_sum_contrasts() ## quite important, currently coding is not checked
 
 data("Machines", package = "MEMSS")
 
