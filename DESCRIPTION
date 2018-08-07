@@ -1,0 +1,16 @@
+Package: monet
+Type: Package
+Title: Interface for Testing Model Terms via Nested Models
+Version: 0.1-0
+Authors@R: c(person("Henrik", "Singmann", email = "singmann@gmail.com", 
+              role = c("aut", "cre")))
+Description: missing ... 
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.0
+Suggests:
+    afex,
+    lme4,
+    MEMSS
+Imports: stats
