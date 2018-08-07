@@ -4,7 +4,13 @@ Title: Interface for Testing Model Terms via Nested Models
 Version: 0.1-0
 Authors@R: c(person("Henrik", "Singmann", email = "singmann@gmail.com", 
               role = c("aut", "cre")))
-Description: missing ... 
+Description: Provides an interface for Type III tests of model terms for any 
+    user-provided estimation function via function test_terms(). This is 
+    achieved by estimating a full model including all model terms, as well
+    as restricted models in which the parameters corresponding to one model 
+    term are withhold (i.e., set to zero). The test between the full model and 
+    the restricted model can be  performed via any user-provided model 
+    comparison function, the default uses the generic anova() function.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
