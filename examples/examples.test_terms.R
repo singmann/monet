@@ -59,4 +59,18 @@ emmeans::emmeans(sk_m1, c("instruction", "type"))
 
 }
 
-
+\dontrun{
+## It works also with glmmTMB
+## see: https://cran.r-project.org/web/packages/glmmTMB/vignettes/glmmTMB.pdf
+Owls <- transform(glmmTMB::Owls,
+                  Nest=reorder(Nest,NegPerChick),
+                  NCalls=SiblingNegotiation,
+                  FT=FoodTreatment)
+zipp_test <- test_terms(formula = NCalls~(FT+ArrivalTime)*SexParent,
+                        data = Owls,
+                        extra_formula = ~ offset(log(BroodSize)) + (1|Nest),
+                        est_fun = glmmTMB::glmmTMB,
+                        arg_est = list(ziformula=~1, family=poisson)
+)
+zipp_test
+}
