@@ -29,41 +29,50 @@ nested_model_formulas <- function(formula, data,
   if (!missing(data))
     data <- as.data.frame(data)
 
-
-  #mc <- match.call()
   if (!inherits(formula, "formula")) {
     message("Formula (the first argument) converted to formula.")
     formula <- as.formula(formula)
   }
 
-
-  dv <- as.character(formula)[[2]]
-
   if (missing(extra_formula)) {
-    full_formula <- formula
+    full_formula <- reformulate(unique(c(all.vars(formula[[3]]),
+                                         all.vars(formula[[2]]))))
   } else {
     full_formula <- reformulate(unique(c(all.vars(formula[[3]]),
-                                         all.vars(extra_formula))),
-                                response = formula[[2]])
+                                         all.vars(extra_formula),
+                                         all.vars(formula[[2]]))))
   }
 
 
-  new_data <- model.frame(full_formula, data = data, na.action = na.action)
+  #new_data <- model.frame(full_formula, data = data, na.action = na.action)
 
-  all_terms <- attr(terms(formula), "term.labels")
-  effect_order <- attr(terms(formula), "order")
-  max_effect_order <- max(effect_order)
+  ## follows: https://developer.r-project.org/model-fitting-functions.html
+  mf <- match.call(expand.dots = FALSE)
+  m <- match(c("formula", "data", "na.action"), names(mf), 0)
+  mf <- mf[c(1, m)]
+  mf$drop.unused.levels <- TRUE
+  mf[[1]] <- quote(stats::model.frame)
+  mf_fixed <- eval(mf, parent.frame())
 
-  m_matrix <- model.matrix(formula, data = new_data)
+  mf[["formula"]] <- quote(full_formula)
+  new_data <- eval(mf)
 
-  fixed_effects <- attr(terms(formula, data = data), "term.labels")
+  mt <- attr(mf_fixed, "terms")
+
+  # all_terms <- attr(mt, "term.labels")
+  # effect_order <- attr(mt, "order")
+  # max_effect_order <- max(effect_order)
+
+  m_matrix <- model.matrix(mt, mf_fixed)
+
+  fixed_effects <- attr(mt, "term.labels")
   mapping <- attr(m_matrix, "assign")
   fixed_vars <- all.vars(formula)[-1]
 
   out_data <- data.frame(new_data, m_matrix)
   tmp_colnames <- colnames(out_data)[-seq_len(ncol(new_data))]
 
-  if (attr(terms(formula, data = data), "intercept") == 1) {
+  if (attr(mt, "intercept") == 1) {
     fixed_effects <- c("(Intercept)", fixed_effects)
   }
 
@@ -71,7 +80,7 @@ nested_model_formulas <- function(formula, data,
   formulas[[1]] <- formula
   for (i in seq_along(fixed_effects)) {
     formulas[[i+1]] <- reformulate(tmp_colnames[!(mapping == (i-1))],
-                response = dv, intercept = FALSE)
+                response = formula[[2]], intercept = FALSE)
   }
   names(formulas) <- c("full_model", fixed_effects)
   if (!test_intercept && fixed_effects[1] == "(Intercept)") {
