@@ -12,7 +12,7 @@ default uses the generic `anova` function.
 In some sense, `monet` provides a generalization to `afex::mixed`.
 
 The name `monet` is basically a portmanteau based on the fact that this package 
-provides MOdel comparisons for NEsTed models. 
+provides MOdel comparisons for NEsTed models and of course a play on the name of [French painter Claude Monet](https://en.wikipedia.org/wiki/Claude_Monet).
  
 
 ## Installation
