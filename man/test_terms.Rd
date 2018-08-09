@@ -4,8 +4,8 @@
 \alias{test_terms}
 \title{Testing Model Terms via Nested Models}
 \usage{
-test_terms(formula, data, extra_formula, est_fun, arg_est = list(),
-  test_fun = anova_df, arg_test = list(), type = 3,
+test_terms(formula, data, extra_formula, fit_fun, fit_arg = list(),
+  test_fun = anova_df, test_arg = list(), type = 3,
   test_intercept = FALSE, na.action)
 }
 \arguments{
@@ -15,9 +15,9 @@ test_terms(formula, data, extra_formula, est_fun, arg_est = list(),
 
 \item{extra_formula}{Optional one-sided formula that will be added to the resulting formulas. No separate formulas will be built based on this formula. For example, for mixed-effects model this should contain the random-effects.}
 
-\item{est_fun}{Estimation/fitting function. For example, \code{lm}, \code{lmer}, ...}
+\item{fit_fun}{Fitting/estimation function. For example, \code{lm}, \code{lmer}, ...}
 
-\item{arg_est}{\code{list} of additional argments passed to \code{arg_est}.}
+\item{fit_arg}{\code{list} of additional argments passed to \code{fit_fun}.}
 
 \item{test_fun}{Function comparing two models. Needs to return a
 \code{data.frame} with one row and the last two columns
@@ -26,7 +26,7 @@ corresponding p-value (e.g., \code{Pr(>F)}, \code{Pr(>Chisq)}). Default is
 \code{\link{anova_df}} which is a wrapper for the generic \code{anova}
 function that autodetects relevant columns.}
 
-\item{arg_test}{additional argument passed to \code{test_fun}. See examples
+\item{test_arg}{additional argument passed to \code{test_fun}. See examples
 for how to use it with the default \code{test_fun}.}
 
 \item{type}{Type of sums of squares. Currently only Type III (i.e., \code{3} or \code{"III"}) are supported.}
@@ -50,21 +50,21 @@ data("Machines", package = "MEMSS")
 
 # ignoring repeated-measures
 m1 <- test_terms(score ~ Machine, data=Machines,
-                 est_fun = lm)
+                 fit_fun = lm)
 m1
 nice(m1)
 anova(m1)
 
 ## fixed-effects model
 m2 <- test_terms(score ~ Machine*Worker, data=Machines,
-                 est_fun = lm)
+                 fit_fun = lm)
 m2
 
 
 # simple model with random-slopes for repeated-measures factor
 m3 <- test_terms(score ~ Machine, data=Machines,
                  extra_formula = ~ (Machine|Worker),
-                 est_fun = lme4::lmer, arg_est = list(REML = FALSE),
+                 fit_fun = lme4::lmer, fit_arg = list(REML = FALSE),
                  arg_test = list(model.names=c("f", "r")))
 m3
 anova(m3)
@@ -72,7 +72,7 @@ anova(m3)
 ## specify colnames in anova() output by hand instead of automatically:
 m3b <- test_terms(score ~ Machine, data=Machines,
                  extra_formula = ~ (Machine|Worker),
-                 est_fun = lme4::lmer, arg_est = list(REML = FALSE),
+                 fit_fun = lme4::lmer, fit_arg = list(REML = FALSE),
                  arg_test = list(model.names=c("f", "r"),
                                  colnames = list("Chi Df", "Chisq", "Pr(>Chisq)")))
 m3b
@@ -89,7 +89,7 @@ library("lme4")
 sk_m1 <- test_terms(response ~ instruction*inference*type,
                              sk2_aff,
                              extra_formula = ~(inference|id),
-                    est_fun = lmer, arg_est = list(REML = FALSE),
+                    fit_fun = lmer, fit_arg = list(REML = FALSE),
                     arg_test = list(model.names=c("f", "r")))
 
 nice(sk_m1)
@@ -114,8 +114,8 @@ Owls <- transform(glmmTMB::Owls,
 zipp_test <- test_terms(formula = NCalls~(FT+ArrivalTime)*SexParent,
                         data = Owls,
                         extra_formula = ~ offset(log(BroodSize)) + (1|Nest),
-                        est_fun = glmmTMB::glmmTMB,
-                        arg_est = list(ziformula=~1, family=poisson)
+                        fit_fun = glmmTMB::glmmTMB,
+                        fit_arg = list(ziformula=~1, family=poisson)
 )
 zipp_test
 }

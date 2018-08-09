@@ -6,22 +6,22 @@
 #'   comparing two models. The default function for testing model terms is
 #'   \code{\link{anova}} which returns likelihood-ratio tests.
 #' @inheritParams nested_model_formulas
-#' @param est_fun Estimation/fitting function. For example, \code{lm}, \code{lmer}, ...
-#' @param arg_est \code{list} of additional argments passed to \code{arg_est}.
+#' @param fit_fun Fitting/estimation function. For example, \code{lm}, \code{lmer}, ...
+#' @param fit_arg \code{list} of additional argments passed to \code{fit_fun}.
 #' @param test_fun Function comparing two models. Needs to return a
 #'   \code{data.frame} with one row and the last two columns
 #'   need to be the test statistics (e.g., \code{F}, \code{Chisq}) and the
 #'   corresponding p-value (e.g., \code{Pr(>F)}, \code{Pr(>Chisq)}). Default is
 #'   \code{\link{anova_df}} which is a wrapper for the generic \code{anova}
 #'   function that autodetects relevant columns.
-#' @param arg_test additional argument passed to \code{test_fun}. See examples
+#' @param test_arg additional argument passed to \code{test_fun}. See examples
 #'   for how to use it with the default \code{test_fun}.
 #'
 #' @example examples/examples.test_terms.R
 #' @export
 test_terms <- function(formula, data, extra_formula,
-                       est_fun, arg_est = list(),
-                       test_fun = anova_df, arg_test = list(),
+                       fit_fun, fit_arg = list(),
+                       test_fun = anova_df, test_arg = list(),
                        # rev_test_order = FALSE,
                        type = 3,
                        test_intercept = FALSE,
@@ -37,27 +37,27 @@ test_terms <- function(formula, data, extra_formula,
                                          test_intercept = test_intercept,
                                          na.action = na.action)
 
-  est_fun_tmp <- function(x) {
-    do.call(est_fun, args = c(formula = x,
+  fit_fun_tmp <- function(x) {
+    do.call(fit_fun, args = c(formula = x,
                               data = list(prep_formulas$data),
-                              arg_est))
+                              fit_arg))
   }
-  all_fit <- lapply(prep_formulas$formulas, est_fun_tmp)
+  all_fit <- lapply(prep_formulas$formulas, fit_fun_tmp)
 
   print_message <- TRUE
   test_fun_tmp <- function(x) {
     do.call(test_fun, args = c(object = list(x), list(all_fit[[1]]),
-                               arg_test))
+                               test_arg))
   }
   # if (rev_test_order) {
   #   test_fun_tmp <- function(x) {
   #     do.call(test_fun, args = c(object = list(x), list(all_fit[[1]]),
-  #                                arg_test))
+  #                                test_arg))
   #   }
   # } else {
   #   test_fun_tmp <- function(x) {
   #     do.call(test_fun, args = c(object = list(all_fit[[1]]), list(x),
-  #                                arg_test))
+  #                                test_arg))
   #   }
   # }
   anova_table <- do.call("rbind", lapply(all_fit[-1], test_fun_tmp))
@@ -67,7 +67,7 @@ test_terms <- function(formula, data, extra_formula,
   ## prepare output:
   class(anova_table) <- c("anova", "data.frame")
   attr(anova_table, "heading") <- c(
-    paste0(deparse(mc[["est_fun"]]),
+    paste0(deparse(mc[["fit_fun"]]),
            " Anova Table (Type ", type , " tests)\n"),
     paste0("Model: ", deparse(prep_formulas$formulas[[1]])),
     paste0("Data: " , deparse(mc[["data"]]))

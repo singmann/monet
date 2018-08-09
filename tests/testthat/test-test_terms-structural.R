@@ -7,10 +7,10 @@ test_that("mixed: Maxell & Delaney (2004), Table 16.4, p. 842: Type 3", {
   md_16.4b <- md_16.4
   md_16.4b$cog <- scale(md_16.4b$cog, scale=FALSE)
   contrasts(md_16.4b$cond) <- "contr.sum"
-  mixed4_2 <- suppressMessages(test_terms(induct ~ cond*cog, md_16.4b,
+  mixed4_2 <- test_terms(induct ~ cond*cog, md_16.4b,
                          extra_formula = ~ (cog|room:cond),
-                         est_fun = lme4::lmer, arg_est = list(REML = FALSE),
-                 arg_test = list(model.names=c("f", "r"))))
+                         fit_fun = lme4::lmer, fit_arg = list(REML = FALSE),
+                 test_arg = list(model.names=c("f", "r")))
   lmer4_full <- lme4::lmer(induct ~ cond*cog + (cog|room:cond), md_16.4b,
                            REML = FALSE)
   lmer4_small <- lme4::lmer(induct ~ cond+cog + (cog|room:cond), md_16.4b,

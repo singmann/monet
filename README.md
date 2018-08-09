@@ -3,7 +3,7 @@
 # monet
 
 `monet` provides an interface for Type III tests of model terms for any 
-user-provided estimation function via function `test_terms()`. This is achieved 
+user-provided fit function via function `test_terms()`. This is achieved 
 by estimating a full model including all model terms, as well as restricted 
 models in which the parameters corresponding to one model term are withhold 
 (i.e., set to zero). The test between the full model and the restricted model 
@@ -37,7 +37,7 @@ data("Machines", package = "MEMSS")
 
 # ignoring repeated-measures
 m1 <- test_terms(score ~ Machine, data=Machines,
-                 est_fun = lm)
+                 fit_fun = lm)
 m1
 # lm Anova Table (Type III tests)
 # 
@@ -53,8 +53,8 @@ anova(m1)
 # simple model with random-slopes for repeated-measures factor
 m3 <- test_terms(score ~ Machine, data=Machines,
                  extra_formula = ~ (Machine|Worker),
-                 est_fun = lme4::lmer, arg_est = list(REML = FALSE),
-                 arg_test = list(model.names=c("f", "r")))
+                 fit_fun = lme4::lmer, fit_arg = list(REML = FALSE),
+                 test_arg = list(model.names=c("f", "r")))
 m3
 # lme4::lmer Anova Table (Type III tests)
 # 

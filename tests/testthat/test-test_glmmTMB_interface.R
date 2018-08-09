@@ -17,8 +17,8 @@ test_that("Examples work: vignette", {
     zipp_test <- test_terms(formula = NCalls~(FT+ArrivalTime)*SexParent +
                               offset(log(BroodSize)),
                             data = Owls, extra_formula = ~ (1|Nest),
-                            est_fun = glmmTMB,
-                            arg_est = list(ziformula=~1, family=poisson)
+                            fit_fun = glmmTMB,
+                            fit_arg = list(ziformula=~1, family=poisson)
     )
     expect_is(zipp_test, "monet")
     sum1 <- summary(fit_zipoisson)
@@ -33,8 +33,8 @@ test_that("Examples work: vignette", {
     zipp_test <- test_terms(formula = NCalls~(FT+scale(ArrivalTime))*SexParent +
                               offset(log(BroodSize)),
                             data = Owls, extra_formula = ~ (1|Nest),
-                            est_fun = glmmTMB,
-                            arg_est = list(ziformula=~1, family=poisson)
+                            fit_fun = glmmTMB,
+                            fit_arg = list(ziformula=~1, family=poisson)
     )
     expect_is(zipp_test, "monet")
     sum1 <- summary(fit_zipoisson)
@@ -56,8 +56,8 @@ test_that("Examples work: ?glmmTMB", {
     m0 <- glmmTMB(count~ 1 + (1|site), zi=~mined, family=poisson,
                   data=Salamanders)
     m1_test <- test_terms(count~ mined, extra_formula = ~ (1|site),
-                          est_fun = glmmTMB,
-                          arg_est = list(zi=~mined, family=poisson),
+                          fit_fun = glmmTMB,
+                          fit_arg = list(zi=~mined, family=poisson),
                           data=Salamanders)
     man_test <- anova(m0, m1)
 
@@ -76,8 +76,8 @@ test_that("Examples work: ?glmmTMB", {
 
     test_tmbm1 <- test_terms(cbind(incidence, size-incidence) ~ period,
                              extra_formula = ~ (1 | herd),
-                             data=cbpp, est_fun = glmmTMB,
-                             arg_est = list(family=binomial))
+                             data=cbpp, fit_fun = glmmTMB,
+                             fit_arg = list(family=binomial))
 
     man_test <- anova(tmbm0, tmbm1)
 

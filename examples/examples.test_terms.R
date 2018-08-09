@@ -5,21 +5,21 @@ data("Machines", package = "MEMSS")
 
 # ignoring repeated-measures
 m1 <- test_terms(score ~ Machine, data=Machines,
-                 est_fun = lm)
+                 fit_fun = lm)
 m1
 nice(m1)
 anova(m1)
 
 ## fixed-effects model
 m2 <- test_terms(score ~ Machine*Worker, data=Machines,
-                 est_fun = lm)
+                 fit_fun = lm)
 m2
 
 
 # simple model with random-slopes for repeated-measures factor
 m3 <- test_terms(score ~ Machine, data=Machines,
                  extra_formula = ~ (Machine|Worker),
-                 est_fun = lme4::lmer, arg_est = list(REML = FALSE),
+                 fit_fun = lme4::lmer, fit_arg = list(REML = FALSE),
                  arg_test = list(model.names=c("f", "r")))
 m3
 anova(m3)
@@ -27,7 +27,7 @@ anova(m3)
 ## specify colnames in anova() output by hand instead of automatically:
 m3b <- test_terms(score ~ Machine, data=Machines,
                  extra_formula = ~ (Machine|Worker),
-                 est_fun = lme4::lmer, arg_est = list(REML = FALSE),
+                 fit_fun = lme4::lmer, fit_arg = list(REML = FALSE),
                  arg_test = list(model.names=c("f", "r"),
                                  colnames = list("Chi Df", "Chisq", "Pr(>Chisq)")))
 m3b
@@ -44,7 +44,7 @@ library("lme4")
 sk_m1 <- test_terms(response ~ instruction*inference*type,
                              sk2_aff,
                              extra_formula = ~(inference|id),
-                    est_fun = lmer, arg_est = list(REML = FALSE),
+                    fit_fun = lmer, fit_arg = list(REML = FALSE),
                     arg_test = list(model.names=c("f", "r")))
 
 nice(sk_m1)
@@ -69,8 +69,8 @@ Owls <- transform(glmmTMB::Owls,
 zipp_test <- test_terms(formula = NCalls~(FT+ArrivalTime)*SexParent,
                         data = Owls,
                         extra_formula = ~ offset(log(BroodSize)) + (1|Nest),
-                        est_fun = glmmTMB::glmmTMB,
-                        arg_est = list(ziformula=~1, family=poisson)
+                        fit_fun = glmmTMB::glmmTMB,
+                        fit_arg = list(ziformula=~1, family=poisson)
 )
 zipp_test
 }
