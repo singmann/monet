@@ -65,7 +65,7 @@ m2
 m3 <- test_terms(score ~ Machine, data=Machines,
                  extra_formula = ~ (Machine|Worker),
                  fit_fun = lme4::lmer, fit_arg = list(REML = FALSE),
-                 arg_test = list(model.names=c("f", "r")))
+                 test_arg = list(model.names=c("f", "r")))
 m3
 anova(m3)
 
@@ -73,7 +73,7 @@ anova(m3)
 m3b <- test_terms(score ~ Machine, data=Machines,
                  extra_formula = ~ (Machine|Worker),
                  fit_fun = lme4::lmer, fit_arg = list(REML = FALSE),
-                 arg_test = list(model.names=c("f", "r"),
+                 test_arg = list(model.names=c("f", "r"),
                                  colnames = list("Chi Df", "Chisq", "Pr(>Chisq)")))
 m3b
 
@@ -90,7 +90,7 @@ sk_m1 <- test_terms(response ~ instruction*inference*type,
                              sk2_aff,
                              extra_formula = ~(inference|id),
                     fit_fun = lmer, fit_arg = list(REML = FALSE),
-                    arg_test = list(model.names=c("f", "r")))
+                    test_arg = list(model.names=c("f", "r")))
 
 nice(sk_m1)
 anova(sk_m1)
