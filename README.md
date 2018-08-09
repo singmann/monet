@@ -3,16 +3,17 @@
 # monet
 
 `monet` provides an interface for Type III tests of model terms for any 
-user-provided estimation function: `test_terms`.  
-This is achieved by estimating a full model including all model terms, as well
-as restricted models in which the parameters corresponding to one model term are
-withhold (i.e., set to zero). The test between the full model and the restricted
-model can be  performed via any user-provided model comparison function, the
-default uses the generic `anova` function.
-In some sense, `monet` provides a generalization to `afex::mixed`.
+user-provided estimation function via function `test_terms()`. This is achieved 
+by estimating a full model including all model terms, as well as restricted 
+models in which the parameters corresponding to one model term are withhold 
+(i.e., set to zero). The test between the full model and the restricted model 
+can be  performed via any user-provided model comparison function, the default 
+uses the generic `anova` function. `monet` essentially provides a generalization
+of `afex::mixed` to arbitrary user defined estimation and testing functions.
 
 The name `monet` is basically a portmanteau based on the fact that this package 
-provides MOdel comparisons for NEsTed models and of course a play on the name of [French painter Claude Monet](https://en.wikipedia.org/wiki/Claude_Monet).
+provides MOdel comparisons for NEsTed models and of course a play on the name of
+[French painter Claude Monet](https://en.wikipedia.org/wiki/Claude_Monet).
  
 
 ## Installation
@@ -76,4 +77,14 @@ afex::mixed(score ~ Machine + (Machine|Worker), data=Machines, method = "LRT")
 # 1 Machine  2 17.14 ***   .0002
 # ---
 # Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘+’ 0.1 ‘ ’ 1
+
+## emmeans support is provided automatically for the returned objects:
+emmeans::emmeans(m3, "Machine")
+#  Machine   emmean       SE  df lower.CL upper.CL
+#  A       52.35556 1.680711 7.2 48.40357 56.30754
+#  B       60.32222 3.528546 7.2 52.02529 68.61916
+#  C       66.27222 1.806273 7.2 62.02500 70.51945
+# 
+# Degrees-of-freedom method: kenward-roger 
+# Confidence level used: 0.95 
 ```

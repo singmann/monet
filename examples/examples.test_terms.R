@@ -54,4 +54,9 @@ anova(sk_m1)
 afex::mixed(response ~ instruction*inference*type + (inference|id),
                              sk2_aff, method = "LRT")
 
+## if corresponding method exist, emmeans support is provided automatically:
+emmeans::emmeans(sk_m1, c("instruction", "type"))
+
 }
+
+
