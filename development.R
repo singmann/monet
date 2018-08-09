@@ -9,6 +9,7 @@ library(usethis) ## see: https://github.com/r-lib/usethis
 
 use_package("afex", "Suggests")
 use_package("MEMSS", "Suggests")
+use_package("glmmTMB", "Suggests")
 use_package("stats", "Imports")
 
 use_test("test_terms")
