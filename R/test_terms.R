@@ -70,7 +70,7 @@ test_terms <- function(formula, data, extra_formula,
     paste0(deparse(mc[["est_fun"]]),
            " Anova Table (Type ", type , " tests)\n"),
     paste0("Model: ", deparse(prep_formulas$formulas[[1]])),
-    paste0("Data: " , mc[["data"]])
+    paste0("Data: " , deparse(mc[["data"]]))
     # paste0("Df full model: ", )
     )
   attr(anova_table, "sig_symbols") <- c(" +", " *", " **", " ***")
