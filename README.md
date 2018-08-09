@@ -28,12 +28,28 @@ devtools::install_github("singmann/monet")
 
 ## Example
 
-The main function is `test_terms`:
+The main function is `test_terms` which works with many different fit functions:
 
 ``` r
 set_sum_contrasts() ## quite important, currently coding is not checked
 
-data("Machines", package = "MEMSS")
+test_terms(formula = count~spp * mined, 
+           extra_formula =  ~(1|site), 
+           fit_fun = glmmTMB::glmmTMB, 
+           fit_arg = list(zi=~spp * mined, family="poisson"), 
+           data = glmmTMB::Salamanders)
+           glmmTMB::glmmTMB Anova Table (Type III tests)
+# Model: count ~ spp * mined + (1 | site)
+# Data: glmmTMB::Salamanders
+#      Effect Df 1 Df 0     Chisq Pr(>Chisq)
+# 1       spp   29    6   14.53 *        .02
+# 2     mined   29    1 19.98 ***     <.0001
+# 3 spp:mined   29    6   13.85 *        .03
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘+’ 0.1 ‘ ’ 1
+
+
+data("Machines", package = "MEMSS") ## example data from MEMSS package
 
 # ignoring repeated-measures
 m1 <- test_terms(score ~ Machine, data=Machines,
