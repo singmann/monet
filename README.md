@@ -31,6 +31,7 @@ devtools::install_github("singmann/monet")
 The main function is `test_terms` which works with many different fit functions:
 
 ``` r
+library("monet")
 set_sum_contrasts() ## quite important, currently coding is not checked
 
 test_terms(formula = count~spp * mined, 
@@ -38,7 +39,7 @@ test_terms(formula = count~spp * mined,
            fit_fun = glmmTMB::glmmTMB, 
            fit_arg = list(zi=~spp * mined, family="poisson"), 
            data = glmmTMB::Salamanders)
-           glmmTMB::glmmTMB Anova Table (Type III tests)
+# glmmTMB::glmmTMB Anova Table (Type III tests)
 # Model: count ~ spp * mined + (1 | site)
 # Data: glmmTMB::Salamanders
 #      Effect Df 1 Df 0     Chisq Pr(>Chisq)
