@@ -1,4 +1,5 @@
 [![Travis-CI Build Status](https://travis-ci.org/singmann/monet.svg?branch=master)](https://travis-ci.org/singmann/monet)
+[![zenodo doi](https://zenodo.org/badge/DOI/10.5281/zenodo.4697305.svg)](https://zenodo.org/record/4697305)
 
 # monet
 
